@@ -1,0 +1,7 @@
+Droplet ID: 508868417
+Droplet Name: ntfy-server
+IP Address: 161.35.52.31
+Size: s-1vcpu-1gb
+Region: nyc1
+SSH Key: 49388495
+Created: Sat Jul 19 01:41:19 PM BST 2025

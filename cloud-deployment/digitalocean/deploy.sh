@@ -10,7 +10,7 @@ DROPLET_NAME="ntfy-server"
 DROPLET_SIZE="s-1vcpu-1gb"  # Basic droplet - upgrade as needed
 DROPLET_IMAGE="ubuntu-24-04-x64"
 DROPLET_REGION="nyc1"  # Change to your preferred region
-SSH_KEY_NAME=""  # Will be set by user
+SSH_KEY_NAME="Sandbox-2"  # Will be set by user
 
 # Colors for output
 RED='\033[0;31m'
