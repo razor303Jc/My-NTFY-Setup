@@ -5,7 +5,8 @@ Your NTFY notification server has been successfully deployed to DigitalOcean!
 
 ## Server Details
 - **Public IP**: 161.35.52.31
-- **Web Interface**: http://161.35.52.31:8080
+- **Domain**: ntfy.razor303.co.uk (ready for SSL)
+- **Web Interface**: http://161.35.52.31:8080 (HTTP) | https://ntfy.razor303.co.uk (HTTPS with SSL)
 - **Health Check**: http://161.35.52.31:8080/v1/health
 - **Status**: ✅ LIVE and OPERATIONAL
 
@@ -102,11 +103,23 @@ ssh ntfy@161.35.52.31 'cd /opt/ntfy && docker-compose -f docker-compose.simple.y
 
 ## Next Steps
 
-### 1. Domain Setup (Optional)
-To use a custom domain:
-1. Point your domain DNS A record to: `161.35.52.31`
-2. Wait for DNS propagation
-3. Configure SSL with Let's Encrypt
+### 1. Domain & SSL Setup (Recommended)
+Set up your custom domain with SSL encryption:
+
+```bash
+# Run the SSL setup script
+./setup-ssl.sh
+```
+
+This will:
+1. Configure nginx as reverse proxy
+2. Generate Let's Encrypt SSL certificate
+3. Set up automatic HTTP → HTTPS redirect
+4. Enable security headers
+5. Configure automatic certificate renewal
+
+**Your domain**: ntfy.razor303.co.uk  
+**DNS A Record**: Point to `161.35.52.31`
 
 ### 2. Authentication (Optional)
 To add user authentication:
@@ -120,12 +133,15 @@ Connect to your monitoring systems:
 - Metrics available via Docker stats
 - Log monitoring via Docker logs
 
-## Cloudflare Integration (Next Phase)
-Ready for Cloudflare setup when needed:
-- DNS management
-- SSL/TLS encryption
-- DDoS protection
-- Performance optimization
+## Let's Encrypt SSL Integration
+Ready for SSL setup with Let's Encrypt:
+- Automatic SSL certificate generation
+- HTTP → HTTPS redirect
+- Certificate auto-renewal
+- Security headers configured
+- Domain: ntfy.razor303.co.uk
+
+Run `./setup-ssl.sh` to enable HTTPS!
 
 ## Cost Estimate
 - **DigitalOcean Droplet**: ~$12/month (s-1vcpu-1gb)
