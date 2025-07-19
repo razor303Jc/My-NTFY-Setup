@@ -2,6 +2,8 @@
 
 # Fix NTFY deployment - handle SSH keys for ntfy user
 # This script fixes the SSH access issue and completes deployment
+# Note: This is only needed for deployments created before the SSH fix in deploy.sh
+# New deployments using the updated deploy.sh should not need this fix
 
 set -e
 
