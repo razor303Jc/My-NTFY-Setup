@@ -4,6 +4,29 @@
 # This script verifies that your domain is properly configured before SSL setup
 
 DOMAIN="ntfy.razor303.co.uk"
+
+# Get the expected IP from droplet-info.txt if it exists
+if [ -f "droplet-info.txt" ]; then
+    EXPECTED_IP=$(grep "IP Address:" droplet-info.txt | cut -d' ' -f3)
+    if [ -z "$EXPECTED_IP" ]; then
+        echo "❌ Could not find IP address in droplet-info.txt"
+        echo "Please make sure your droplet is deployed first."
+        exit 1
+    fi
+else
+    echo "❌ droplet-info.txt not found"
+    echo "Please run the deployment script first to create your droplet."
+    exit 1
+fi
+
+echo "🔍 Checking DNS configuration for $DOMAIN..."
+echo "Expected IP: $EXPECTED_IP"
+echo ""
+
+# DNS Check Script for NTFY SSL Setup
+# This script verifies that your domain is properly configured before SSL setup
+
+DOMAIN="ntfy.razor303.co.uk"
 EXPECTED_IP="209.38.168.49"
 
 echo "🔍 Checking DNS configuration for $DOMAIN..."

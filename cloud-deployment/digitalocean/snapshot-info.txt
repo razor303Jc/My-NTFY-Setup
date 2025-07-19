@@ -1,0 +1,5 @@
+Snapshot ID: 193842068
+Snapshot Name: ntfy-server-configured-20250719-151248
+Source Droplet ID: 508876515
+Created: Sat Jul 19 03:12:48 PM GMT 2025
+Status: Ready for deployment

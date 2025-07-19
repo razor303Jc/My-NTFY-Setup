@@ -75,6 +75,60 @@ select_ssh_key() {
     print_status "Using SSH key: $SSH_KEY_NAME"
 }
 
+select_reserved_ip() {
+    print_status "Checking for available Reserved IPs..."
+    
+    # List all reserved IPs
+    RESERVED_IPS=$(doctl compute reserved-ip list --format IP,Region,DropletID --no-header)
+    
+    if [ -z "$RESERVED_IPS" ]; then
+        print_warning "No Reserved IPs found. Creating droplet without Reserved IP."
+        RESERVED_IP=""
+        return
+    fi
+    
+    echo ""
+    print_status "Available Reserved IPs:"
+    echo "IP Address       Region    Assigned To"
+    echo "----------------------------------------"
+    echo "$RESERVED_IPS"
+    echo ""
+    
+    read -p "Enter Reserved IP address to assign (or press Enter to skip): " RESERVED_IP_INPUT
+    
+    if [ -z "$RESERVED_IP_INPUT" ]; then
+        print_status "No Reserved IP selected. Creating droplet with standard IP."
+        RESERVED_IP=""
+        return
+    fi
+    
+    # Validate the Reserved IP exists and get its region
+    RESERVED_IP_INFO=$(echo "$RESERVED_IPS" | grep "^$RESERVED_IP_INPUT")
+    if [ -z "$RESERVED_IP_INFO" ]; then
+        print_error "Reserved IP not found: $RESERVED_IP_INPUT"
+        exit 1
+    fi
+    
+    # Extract region from Reserved IP info
+    RESERVED_IP_REGION=$(echo "$RESERVED_IP_INFO" | awk '{print $2}')
+    RESERVED_IP_DROPLET=$(echo "$RESERVED_IP_INFO" | awk '{print $3}')
+    
+    # Check if already assigned
+    if [ "$RESERVED_IP_DROPLET" != "-" ]; then
+        print_error "Reserved IP $RESERVED_IP_INPUT is already assigned to droplet: $RESERVED_IP_DROPLET"
+        exit 1
+    fi
+    
+    # Update droplet region to match Reserved IP region
+    if [ "$RESERVED_IP_REGION" != "$DROPLET_REGION" ]; then
+        print_warning "Updating droplet region from $DROPLET_REGION to $RESERVED_IP_REGION to match Reserved IP"
+        DROPLET_REGION="$RESERVED_IP_REGION"
+    fi
+    
+    RESERVED_IP="$RESERVED_IP_INPUT"
+    print_status "Using Reserved IP: $RESERVED_IP in region: $RESERVED_IP_REGION"
+}
+
 create_droplet() {
     print_status "Creating DigitalOcean droplet..."
     
@@ -106,8 +160,22 @@ create_droplet() {
         sleep 10
     done
     
-    # Get droplet IP
-    DROPLET_IP=$(doctl compute droplet get "$DROPLET_ID" --format PublicIPv4 --no-header)
+    # Assign Reserved IP if specified
+    if [ -n "$RESERVED_IP" ]; then
+        print_status "Assigning Reserved IP $RESERVED_IP to droplet..."
+        doctl compute reserved-ip assign "$RESERVED_IP" "$DROPLET_ID"
+        if [ $? -eq 0 ]; then
+            print_status "Reserved IP assigned successfully!"
+            DROPLET_IP="$RESERVED_IP"
+        else
+            print_error "Failed to assign Reserved IP. Using droplet's public IP instead."
+            DROPLET_IP=$(doctl compute droplet get "$DROPLET_ID" --format PublicIPv4 --no-header)
+        fi
+    else
+        # Get droplet IP
+        DROPLET_IP=$(doctl compute droplet get "$DROPLET_ID" --format PublicIPv4 --no-header)
+    fi
+    
     print_status "Droplet is ready! IP: $DROPLET_IP"
     
     # Save droplet info
@@ -115,6 +183,7 @@ create_droplet() {
 Droplet ID: $DROPLET_ID
 Droplet Name: $DROPLET_NAME
 IP Address: $DROPLET_IP
+Reserved IP: ${RESERVED_IP:-"None"}
 Size: $DROPLET_SIZE
 Region: $DROPLET_REGION
 SSH Key: $SSH_KEY_NAME
@@ -253,13 +322,44 @@ main() {
     echo "DigitalOcean NTFY Deployment Script"
     echo "===================================="
     
+    # Parse command line arguments
+    RESERVED_IP=""
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --reserved-ip)
+                RESERVED_IP="$2"
+                shift 2
+                ;;
+            --region)
+                DROPLET_REGION="$2"
+                shift 2
+                ;;
+            --with-ssl)
+                WITH_SSL=true
+                shift
+                ;;
+            *)
+                # Unknown option, keep for backward compatibility
+                break
+                ;;
+        esac
+    done
+    
     check_requirements
     select_ssh_key
+    
+    # Skip Reserved IP selection if one was provided via command line
+    if [ -z "$RESERVED_IP" ]; then
+        select_reserved_ip
+    else
+        print_status "Using provided Reserved IP: $RESERVED_IP"
+    fi
+    
     create_droplet
     setup_server
     deploy_ntfy
     
-    if [ "$1" = "--with-ssl" ]; then
+    if [ "$WITH_SSL" = true ] || [ "$1" = "--with-ssl" ]; then
         setup_ssl
     else
         print_warning "SSL not configured. Run with --with-ssl to set up SSL certificates"

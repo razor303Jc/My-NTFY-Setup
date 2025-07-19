@@ -7,9 +7,23 @@ set -e
 
 DOMAIN="ntfy.razor303.co.uk"
 EMAIL="admin@razor303.co.uk"
-DROPLET_IP="161.35.52.31"
+
+# Get the droplet IP from droplet-info.txt
+if [ -f "droplet-info.txt" ]; then
+    DROPLET_IP=$(grep "IP Address:" droplet-info.txt | cut -d' ' -f3)
+    if [ -z "$DROPLET_IP" ]; then
+        echo "❌ Could not find IP address in droplet-info.txt"
+        echo "Please make sure your droplet is deployed first."
+        exit 1
+    fi
+else
+    echo "❌ droplet-info.txt not found"
+    echo "Please run the deployment script first to create your droplet."
+    exit 1
+fi
 
 echo "🔒 Setting up SSL with Let's Encrypt for $DOMAIN"
+echo "Target IP: $DROPLET_IP"
 echo "=================================================="
 
 # Colors for output
