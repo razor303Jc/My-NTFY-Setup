@@ -1,0 +1,63 @@
+# NTFY Server Configuration for Production
+# This configuration is optimized for cloud deployment
+
+# Base URL - UPDATE THIS with your actual domain
+base-url: "https://your-domain.com"
+
+# Cache settings
+cache-file: "/var/cache/ntfy/cache.db"
+cache-duration: "12h"
+cache-batch-size: 25
+cache-batch-timeout: "1s"
+
+# Database optimizations for production
+cache-startup-queries: |
+    pragma journal_mode = WAL;
+    pragma synchronous = normal;
+    pragma temp_store = memory;
+    pragma busy_timeout = 15000;
+    vacuum;
+
+# Attachment settings
+attachment-cache-dir: "/var/cache/ntfy/attachments"
+attachment-total-size-limit: "5G"
+attachment-file-size-limit: "15M"
+attachment-expiry-duration: "3h"
+
+# Authentication settings - IMPORTANT for production
+auth-file: "/var/lib/ntfy/auth.db"
+auth-default-access: "deny-all"
+
+# Web interface settings
+web-root: "/"
+enable-signup: false  # Set to true if you want public signups
+enable-login: true
+
+# Rate limiting settings (adjusted for production)
+visitor-request-limit-burst: 60
+visitor-request-limit-replenish: "5s"
+visitor-message-daily-limit: 1000
+visitor-email-limit-burst: 16
+visitor-email-limit-replenish: "1h"
+visitor-attachment-total-size-limit: "100M"
+visitor-attachment-daily-bandwidth-limit: "500M"
+
+# Behind proxy settings (REQUIRED for production)
+behind-proxy: true
+proxy-forwarded-header: "X-Forwarded-For"
+
+# Logging
+log-level: "info"
+log-format: "json"
+log-file: "/var/log/ntfy.log"
+
+# iOS instant notifications (optional - forwards to ntfy.sh)
+upstream-base-url: "https://ntfy.sh"
+
+# Performance settings
+keepalive-interval: "45s"
+manager-interval: "1m"
+
+# Security settings
+global-topic-limit: 15000
+visitor-subscription-limit: 30

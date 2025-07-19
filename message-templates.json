@@ -1,0 +1,172 @@
+{
+  "message_templates": {
+    "system_alerts": {
+      "server_down": {
+        "title": "🚨 Server Alert",
+        "message": "Server {{server_name}} is down",
+        "priority": "urgent",
+        "tags": ["alert", "server", "critical"],
+        "topic": "alerts"
+      },
+      "high_cpu": {
+        "title": "⚠️ High CPU Usage",
+        "message": "CPU usage on {{server_name}} is {{cpu_percent}}%",
+        "priority": "high",
+        "tags": ["warning", "cpu", "performance"],
+        "topic": "system"
+      },
+      "low_disk_space": {
+        "title": "💾 Low Disk Space",
+        "message": "Disk space on {{server_name}} is {{disk_percent}}% full",
+        "priority": "high",
+        "tags": ["warning", "disk", "storage"],
+        "topic": "system"
+      },
+      "memory_warning": {
+        "title": "🧠 High Memory Usage",
+        "message": "Memory usage on {{server_name}} is {{memory_percent}}%",
+        "priority": "default",
+        "tags": ["warning", "memory"],
+        "topic": "system"
+      }
+    },
+    "backup_alerts": {
+      "backup_success": {
+        "title": "✅ Backup Successful",
+        "message": "Backup of {{backup_name}} completed successfully at {{timestamp}}",
+        "priority": "low",
+        "tags": ["backup", "success"],
+        "topic": "backups"
+      },
+      "backup_failed": {
+        "title": "❌ Backup Failed",
+        "message": "Backup of {{backup_name}} failed: {{error_message}}",
+        "priority": "high",
+        "tags": ["backup", "error", "critical"],
+        "topic": "backups"
+      },
+      "backup_long_running": {
+        "title": "⏰ Long Running Backup",
+        "message": "Backup of {{backup_name}} has been running for {{duration}} minutes",
+        "priority": "default",
+        "tags": ["backup", "warning"],
+        "topic": "backups"
+      }
+    },
+    "application_alerts": {
+      "deployment_success": {
+        "title": "🚀 Deployment Successful",
+        "message": "{{app_name}} v{{version}} deployed successfully to {{environment}}",
+        "priority": "low",
+        "tags": ["deployment", "success"],
+        "topic": "deployments"
+      },
+      "deployment_failed": {
+        "title": "💥 Deployment Failed",
+        "message": "{{app_name}} v{{version}} deployment to {{environment}} failed: {{error}}",
+        "priority": "urgent",
+        "tags": ["deployment", "error", "critical"],
+        "topic": "deployments"
+      },
+      "api_error_rate": {
+        "title": "📊 High API Error Rate",
+        "message": "API error rate for {{service_name}} is {{error_rate}}% (threshold: {{threshold}}%)",
+        "priority": "high",
+        "tags": ["api", "error", "monitoring"],
+        "topic": "monitoring"
+      },
+      "service_restart": {
+        "title": "🔄 Service Restarted",
+        "message": "{{service_name}} has been automatically restarted due to {{reason}}",
+        "priority": "default",
+        "tags": ["service", "restart"],
+        "topic": "services"
+      }
+    },
+    "security_alerts": {
+      "failed_login": {
+        "title": "🔐 Failed Login Attempt",
+        "message": "Failed login attempt for user {{username}} from IP {{ip_address}}",
+        "priority": "high",
+        "tags": ["security", "login", "warning"],
+        "topic": "security"
+      },
+      "suspicious_activity": {
+        "title": "👀 Suspicious Activity",
+        "message": "Suspicious activity detected: {{activity_description}} from {{source}}",
+        "priority": "urgent",
+        "tags": ["security", "suspicious", "critical"],
+        "topic": "security"
+      },
+      "ssl_expiry": {
+        "title": "🔒 SSL Certificate Expiring",
+        "message": "SSL certificate for {{domain}} expires in {{days}} days",
+        "priority": "high",
+        "tags": ["ssl", "certificate", "expiry"],
+        "topic": "certificates"
+      }
+    },
+    "general_notifications": {
+      "daily_report": {
+        "title": "📋 Daily Report",
+        "message": "Daily system report: {{summary}}",
+        "priority": "low",
+        "tags": ["report", "daily"],
+        "topic": "reports"
+      },
+      "maintenance_start": {
+        "title": "🔧 Maintenance Starting",
+        "message": "Scheduled maintenance for {{system}} starting now. Expected duration: {{duration}}",
+        "priority": "default",
+        "tags": ["maintenance", "scheduled"],
+        "topic": "maintenance"
+      },
+      "maintenance_complete": {
+        "title": "✅ Maintenance Complete",
+        "message": "Scheduled maintenance for {{system}} completed successfully",
+        "priority": "low",
+        "tags": ["maintenance", "complete"],
+        "topic": "maintenance"
+      },
+      "test_notification": {
+        "title": "🧪 Test Notification",
+        "message": "This is a test notification sent at {{timestamp}}",
+        "priority": "min",
+        "tags": ["test"],
+        "topic": "test"
+      }
+    }
+  },
+  "priority_levels": {
+    "min": 1,
+    "low": 2,
+    "default": 3,
+    "high": 4,
+    "urgent": 5
+  },
+  "common_topics": [
+    "alerts",
+    "system",
+    "backups",
+    "deployments",
+    "monitoring",
+    "services",
+    "security",
+    "certificates",
+    "reports",
+    "maintenance",
+    "test"
+  ],
+  "user_configs": {
+    "jc": {
+      "default_topics": ["alerts", "system", "backups", "deployments"],
+      "priority_threshold": "low",
+      "email_notifications": true
+    },
+    "copilot": {
+      "default_topics": ["test", "monitoring", "reports"],
+      "priority_threshold": "default",
+      "email_notifications": false
+    }
+  }
+}

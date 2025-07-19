@@ -1,0 +1,39 @@
+# NTFY Server Configuration
+# This is a basic configuration for local development and testing
+
+# Base URL - update this when deploying to cloud
+base-url: "http://localhost:8080"
+
+# Cache settings - stores messages temporarily
+cache-file: "/var/cache/ntfy/cache.db"
+cache-duration: "12h"
+
+# Attachment settings
+attachment-cache-dir: "/var/cache/ntfy/attachments"
+attachment-total-size-limit: "5G"
+attachment-file-size-limit: "15M"
+attachment-expiry-duration: "3h"
+
+# Authentication settings (enabled for user management)
+auth-file: "/var/lib/ntfy/auth.db"
+auth-default-access: "read-write"
+
+# Rate limiting settings
+visitor-request-limit-burst: 60
+visitor-request-limit-replenish: "5s"
+visitor-message-daily-limit: 1000
+
+# Web interface settings
+web-root: "/"
+enable-signup: false
+enable-login: false
+
+# Logging
+log-level: "info"
+log-format: "text"
+
+# Behind proxy settings (we'll enable this for cloud deployment)
+behind-proxy: false
+
+# Health check endpoint
+# Available at /v1/health

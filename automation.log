@@ -1,0 +1,14 @@
+[2025-07-19 12:16:28] Running simulation mode...
+[2025-07-19 12:16:28] Sent: 🧪 Simulation: High CPU (ID: aJC1oQS9WeEq)
+[2025-07-19 12:16:30] Sent: 🧪 Simulation: Backup Success (ID: xtx04LGjm8nO)
+[2025-07-19 12:16:33] Sent: 🧪 Simulation: Security Alert (ID: TiEEHGrl6Ltf)
+[2025-07-19 12:16:35] Sent: 🧪 Simulation: Deployment (ID: 56hVNxUSsXc7)
+[2025-07-19 12:16:35] Simulation completed
+[2025-07-19 12:17:22] Starting monitoring cycle...
+[2025-07-19 12:17:22] Testing NTFY server health...
+[2025-07-19 12:17:22] NTFY server health check passed
+[2025-07-19 12:17:22] Running system health check...
+[2025-07-19 12:17:22] Sent: 📊 Memory Status (ID: BRNI2QrUaUTz)
+[2025-07-19 12:17:22] System health check completed
+[2025-07-19 12:17:22] Monitoring cycle completed
+[2025-07-19 12:17:33] Sent: 💓 Manual Heartbeat (ID: 4U799TqF0uBV)
