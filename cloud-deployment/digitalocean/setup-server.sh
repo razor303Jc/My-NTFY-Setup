@@ -29,6 +29,13 @@ ufw --force enable
 useradd -m -s /bin/bash ntfy
 usermod -aG docker ntfy
 
+# Copy SSH keys to ntfy user for deployment access
+mkdir -p /home/ntfy/.ssh
+cp /root/.ssh/authorized_keys /home/ntfy/.ssh/
+chown -R ntfy:ntfy /home/ntfy/.ssh
+chmod 700 /home/ntfy/.ssh
+chmod 600 /home/ntfy/.ssh/authorized_keys
+
 # Create directories
 mkdir -p /opt/ntfy
 chown ntfy:ntfy /opt/ntfy

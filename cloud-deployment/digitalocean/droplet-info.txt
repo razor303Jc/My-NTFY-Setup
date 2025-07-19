@@ -1,10 +1,8 @@
-Droplet ID: 508879161
-Droplet Name: ntfy-server-new-20250719-151547
+Droplet ID: 508887695
+Droplet Name: ntfy-server
 IP Address: 209.38.168.49
 Reserved IP: 209.38.168.49
-Temporary IP: 178.128.168.227
 Size: s-1vcpu-1gb
 Region: lon1
 SSH Key: 49388495
-Created from Snapshot: ntfy-server-configured-20250719-151248 (193842068)
-Created: Sat Jul 19 03:18:53 PM BST 2025
+Created: Sat Jul 19 04:40:53 PM BST 2025
